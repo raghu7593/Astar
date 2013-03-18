@@ -158,6 +158,8 @@ public class puzzle8_main {
     }
     
     void printlist() {
+        System.out.println("---------------------------------------------@@@@@@@@@@@@@@@@@@@@@@@----------------------");
+        System.out.println();
         for (node n : cl) {
             for(int i=0; i<3; i++){
                 for(int j=0; j<3; j++){
@@ -166,6 +168,7 @@ public class puzzle8_main {
             }
             System.out.println();
         }
+        System.out.println("---------------------------------------------@@@@@@@@@@@@@@@@@@@@@@@----------------------");
     }
     
     void printnode(node n) {
@@ -182,6 +185,7 @@ public class puzzle8_main {
         System.out.println("###########################################################");
         String output = "";
         while(n.parent != null){
+//            printnode(n);
             for(int i=0; i<3; i++){
                 for(int j=0; j<3; j++){
                     output = output + n.puz[i][j] + " ";
@@ -252,7 +256,7 @@ public class puzzle8_main {
                         next_chk = (node) it.next();
                         if(isequal(next_chk,next)) {
                             already = true;
-                            if(next.g < next_chk.g){
+                            if(next.g <= next_chk.g){
                                 next_chk.g = next.g;
                                 next_chk.f = next.g + next_chk.h;
                                 next_chk.parent = n;
@@ -266,6 +270,11 @@ public class puzzle8_main {
                         if(isequal(next_chk,next)) {
                             already = true;
                             if(next.g < next_chk.g){
+//                                printnode(next);
+//                                printnode(next_chk);
+//                                parents(next_chk);
+//                                parents(next);
+//                                printlist();
                                 next_chk.g = next.g;
                                 next_chk.f = next.g + next_chk.h;
                                 next_chk.parent = n;
@@ -296,6 +305,7 @@ public class puzzle8_main {
                 }
             }
             output = output + "#" + s.g + "#" + s.h + "#" + s.f + "#";
+            System.out.println("Open List = " + ppredirection_ol);
             return output;
         }
         else {

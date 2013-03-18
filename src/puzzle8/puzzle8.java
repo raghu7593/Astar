@@ -58,6 +58,7 @@ public class puzzle8 extends javax.swing.JFrame {
         pprol = new javax.swing.JTextField();
         lpprcl = new javax.swing.JLabel();
         pprcl = new javax.swing.JTextField();
+        bidir = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -109,7 +110,6 @@ public class puzzle8 extends javax.swing.JFrame {
         lfinal.setText("Final alignment of values :");
 
         goalnode.setText("1 2 3 4 5 6 7 8 0 ");
-        goalnode.setFocusable(false);
 
         lnumnodes.setText("Number of nodes expanded : ");
 
@@ -187,6 +187,8 @@ public class puzzle8 extends javax.swing.JFrame {
 
         pprcl.setFocusable(false);
 
+        bidir.setText("Bidirectional");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -233,21 +235,24 @@ public class puzzle8 extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lresult)
                                 .addGap(28, 28, 28)
-                                .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(91, 91, 91)
-                                .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(103, 103, 103)
-                                .addComponent(go, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(36, 36, 36)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(dtiles)
-                            .addComponent(noh))
-                        .addGap(34, 34, 34)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(noh)
+                                .addGap(18, 18, 18)
+                                .addComponent(bidir)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(oeh)
-                            .addComponent(manhattan))))
+                            .addComponent(manhattan)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(74, 74, 74)
+                        .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(103, 103, 103)
+                        .addComponent(go, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(
@@ -276,10 +281,16 @@ public class puzzle8 extends javax.swing.JFrame {
                             .addComponent(manhattan)
                             .addComponent(dtiles))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(noh)
-                            .addComponent(oeh))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(noh)
+                                    .addComponent(oeh))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(bidir)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(back)
                             .addComponent(go))
@@ -329,27 +340,52 @@ public class puzzle8 extends javax.swing.JFrame {
         else if(oeh.isSelected()){
             h = 3;
         }
-        puzzle8_main main = new puzzle8_main(initial_,final_,h);
-        String output = main.run();
-        String[] output_temp;
-        output_temp = output.split("#");
-        result.setText(output_temp[4]);
-        numnodesexp.setText(output_temp[3]);
-        numnodesol.setText(output_temp[2]);
-        pprol.setText(output_temp[1]);
-        pprcl.setText(output_temp[0]);
-        
-        columnnames = new String[] {"Path","g value","h value","f value"};
-        data = (Object[][]) new Object[(output_temp.length-5)/4][4];
-        int j = 0,i = output_temp.length-1;
-        while(i >=5) {
-            data[j][3] = output_temp[i];i--;
-            data[j][2] = output_temp[i];i--;
-            data[j][1] = output_temp[i];i--;
-            data[j][0] = output_temp[i];i--;
-            j++;
+        if(bidir.isSelected()){
+            bidirectional main = new bidirectional(initial_,final_,h);
+            String output = main.run();
+            String[] output_temp;
+            output_temp = output.split("#");
+            result.setText(output_temp[4]);
+            numnodesexp.setText(output_temp[3]);
+            numnodesol.setText(output_temp[2]);
+            pprol.setText(output_temp[1]);
+            pprcl.setText(output_temp[0]);
+
+            columnnames = new String[] {"Path","g value","h value","f value"};
+            data = (Object[][]) new Object[(output_temp.length-5)/4][4];
+            int j = 0,i = output_temp.length-1;
+            while(i >=5) {
+                data[j][3] = output_temp[i];i--;
+                data[j][2] = output_temp[i];i--;
+                data[j][1] = output_temp[i];i--;
+                data[j][0] = output_temp[i];i--;
+                j++;
+            }
+            expnodes.setModel(new DefaultTableModel(data,columnnames));
+        } else {
+            puzzle8_main main = new puzzle8_main(initial_,final_,h);
+            String output = main.run();
+            String[] output_temp;
+            output_temp = output.split("#");
+            result.setText(output_temp[4]);
+            numnodesexp.setText(output_temp[3]);
+            numnodesol.setText(output_temp[2]);
+            pprol.setText(output_temp[1]);
+            pprcl.setText(output_temp[0]);
+
+            columnnames = new String[] {"Path","g value","h value","f value"};
+            data = (Object[][]) new Object[(output_temp.length-5)/4][4];
+            int j = 0,i = output_temp.length-1;
+            while(i >=5) {
+                data[j][3] = output_temp[i];i--;
+                data[j][2] = output_temp[i];i--;
+                data[j][1] = output_temp[i];i--;
+                data[j][0] = output_temp[i];i--;
+                j++;
+            }
+            expnodes.setModel(new DefaultTableModel(data,columnnames));
         }
-        expnodes.setModel(new DefaultTableModel(data,columnnames));
+
     }//GEN-LAST:event_goActionPerformed
 
     private void startnodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startnodeActionPerformed
@@ -393,6 +429,7 @@ public class puzzle8 extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup Heuristic;
     private javax.swing.JButton back;
+    private javax.swing.JCheckBox bidir;
     private javax.swing.JRadioButton dtiles;
     private javax.swing.JTable expnodes;
     private javax.swing.JButton go;

@@ -42,6 +42,14 @@ public class heuristic {
     }
     
     int overestimated(node n, node g){
-        return displaced_tiles(n,g)*2;
+        int oe = 0;
+        for(int i=0; i<9; i++) {
+            int xc = i/3;
+            int yc = i%3;
+            if(n.puz[xc][yc] != g.puz[xc][yc]) {
+                oe++;
+            }
+        }
+        return oe;
     }
 }
