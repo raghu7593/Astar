@@ -83,7 +83,7 @@ public class bidirectional {
         else return false;
     }
     
-    List <node> children (node n){
+    List <node> children (node n, int opp){
         List<node> child=new ArrayList<node>();
         int a=0, b=0;
         for(int i=0; i<3; i++) {
@@ -104,10 +104,19 @@ public class bidirectional {
             nnode.puz[a][b] = nnode.puz[a+1][b];
             nnode.puz[a+1][b] = 0;
             heuristic heur = new heuristic();
-            if(heu == 0) nnode.h = heur.displaced_tiles(nnode, g);
-            else if (heu == 1) nnode.h = heur.manhattan(nnode, g);
-            else if (heu == 3) nnode.h = heur.overestimated(nnode, g);
-            else nnode.h = 0;
+            if(opp == 0){
+                if(heu == 0) nnode.h = heur.displaced_tiles(nnode, g);
+                else if (heu == 1) nnode.h = heur.manhattan(nnode, g);
+                else if (heu == 3) nnode.h = heur.overestimated(nnode, g);
+                else nnode.h = 0;
+            }
+            else {
+                if(heu == 0) nnode.h = heur.displaced_tiles(nnode, s);
+                else if (heu == 1) nnode.h = heur.manhattan(nnode, s);
+                else if (heu == 3) nnode.h = heur.overestimated(nnode, s);
+                else nnode.h = 0;
+            }
+            
             nnode.g = n.g+1;
             nnode.f = nnode.g + nnode.h;
             nnode.parent = n;
@@ -123,10 +132,18 @@ public class bidirectional {
             nnode.puz[a][b] = nnode.puz[a-1][b];
             nnode.puz[a-1][b] = 0;
             heuristic heur = new heuristic();
-            if(heu == 0) nnode.h = heur.displaced_tiles(nnode, g);
-            else if (heu == 1) nnode.h = heur.manhattan(nnode, g);
-            else if (heu == 3) nnode.h = heur.overestimated(nnode, g);
-            else nnode.h = 0;
+            if(opp == 0){
+                if(heu == 0) nnode.h = heur.displaced_tiles(nnode, g);
+                else if (heu == 1) nnode.h = heur.manhattan(nnode, g);
+                else if (heu == 3) nnode.h = heur.overestimated(nnode, g);
+                else nnode.h = 0;
+            }
+            else {
+                if(heu == 0) nnode.h = heur.displaced_tiles(nnode, s);
+                else if (heu == 1) nnode.h = heur.manhattan(nnode, s);
+                else if (heu == 3) nnode.h = heur.overestimated(nnode, s);
+                else nnode.h = 0;
+            }
             nnode.g = n.g+1;
             nnode.f = nnode.g + nnode.h;
             nnode.parent = n;
@@ -142,10 +159,18 @@ public class bidirectional {
             nnode.puz[a][b] = nnode.puz[a][b+1];
             nnode.puz[a][b+1] = 0;
             heuristic heur = new heuristic();
-            if(heu == 0) nnode.h = heur.displaced_tiles(nnode, g);
-            else if (heu == 1) nnode.h = heur.manhattan(nnode, g);
-            else if (heu == 3) nnode.h = heur.overestimated(nnode, g);
-            else nnode.h = 0;
+            if(opp == 0){
+                if(heu == 0) nnode.h = heur.displaced_tiles(nnode, g);
+                else if (heu == 1) nnode.h = heur.manhattan(nnode, g);
+                else if (heu == 3) nnode.h = heur.overestimated(nnode, g);
+                else nnode.h = 0;
+            }
+            else {
+                if(heu == 0) nnode.h = heur.displaced_tiles(nnode, s);
+                else if (heu == 1) nnode.h = heur.manhattan(nnode, s);
+                else if (heu == 3) nnode.h = heur.overestimated(nnode, s);
+                else nnode.h = 0;
+            }
             nnode.g = n.g+1;
             nnode.f = nnode.g + nnode.h;
             nnode.parent = n;
@@ -161,10 +186,18 @@ public class bidirectional {
             nnode.puz[a][b] = nnode.puz[a][b-1];
             nnode.puz[a][b-1] = 0;
             heuristic heur = new heuristic();
-            if(heu == 0) nnode.h = heur.displaced_tiles(nnode, g);
-            else if (heu == 1) nnode.h = heur.manhattan(nnode, g);
-            else if (heu == 3) nnode.h = heur.overestimated(nnode, g);
-            else nnode.h = 0;
+            if(opp == 0){
+                if(heu == 0) nnode.h = heur.displaced_tiles(nnode, g);
+                else if (heu == 1) nnode.h = heur.manhattan(nnode, g);
+                else if (heu == 3) nnode.h = heur.overestimated(nnode, g);
+                else nnode.h = 0;
+            }
+            else {
+                if(heu == 0) nnode.h = heur.displaced_tiles(nnode, s);
+                else if (heu == 1) nnode.h = heur.manhattan(nnode, s);
+                else if (heu == 3) nnode.h = heur.overestimated(nnode, s);
+                else nnode.h = 0;
+            }
             nnode.g = n.g+1;
             nnode.f = nnode.g + nnode.h;
             nnode.parent = n;
@@ -173,10 +206,52 @@ public class bidirectional {
         return child;
     }
     
-    void printlist() {
+    void printlistcl() {
         System.out.println("---------------------------------------------@@@@@@@@@@@@@@@@@@@@@@@----------------------");
         System.out.println();
         for (node n : cl) {
+            for(int i=0; i<3; i++){
+                for(int j=0; j<3; j++){
+                    System.out.print(n.puz[i][j] + " ");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println("---------------------------------------------@@@@@@@@@@@@@@@@@@@@@@@----------------------");
+    }
+    
+    void printlistol() {
+        System.out.println("---------------------------------------------@@@@@@@@@@@@@@@@@@@@@@@----------------------");
+        System.out.println();
+        for (node n : ol) {
+            for(int i=0; i<3; i++){
+                for(int j=0; j<3; j++){
+                    System.out.print(n.puz[i][j] + " ");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println("---------------------------------------------@@@@@@@@@@@@@@@@@@@@@@@----------------------");
+    }
+        
+    void printlistclopp() {
+        System.out.println("---------------------------------------------@@@@@@@@@@@@@@@@@@@@@@@----------------------");
+        System.out.println();
+        for (node n : clopp) {
+            for(int i=0; i<3; i++){
+                for(int j=0; j<3; j++){
+                    System.out.print(n.puz[i][j] + " ");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println("---------------------------------------------@@@@@@@@@@@@@@@@@@@@@@@----------------------");
+    }
+    
+    void printlistolopp() {
+        System.out.println("---------------------------------------------@@@@@@@@@@@@@@@@@@@@@@@----------------------");
+        System.out.println();
+        for (node n : olopp) {
             for(int i=0; i<3; i++){
                 for(int j=0; j<3; j++){
                     System.out.print(n.puz[i][j] + " ");
@@ -323,7 +398,7 @@ public class bidirectional {
     String run() {
         if(solvable()) {
             ol.add(s);
-            clopp.add(g);
+            olopp.add(g);
             node n = null;
             int z = 0;
             while((!ol.isEmpty()) || (!olopp.isEmpty())) {
@@ -334,7 +409,7 @@ public class bidirectional {
                     if(isexistclopp(n)) break;
                     
                     node next,next_chk;
-                    List <node> child = children(n);
+                    List <node> child = children(n,0);
                     Iterator child_it = child.iterator();
                     boolean already = false;
                     while(child_it.hasNext()) {
@@ -386,7 +461,7 @@ public class bidirectional {
                     if(isexistcl(n)) break;
                     
                     node next,next_chk;
-                    List <node> child = children(n);
+                    List <node> child = children(n,1);
                     Iterator child_it = child.iterator();
                     boolean already = false;
                     while(child_it.hasNext()) {
@@ -433,10 +508,12 @@ public class bidirectional {
                 }
                 z++;
             }
-            System.out.println("---------------------------Done----------------------------");
+            int olsz = ol.size() + olopp.size();
+            int clsz = cl.size() + clopp.size();
+            System.out.println("---------------------------Done----------------------------" + z);
             String output = "";
             if(z%2 == 0){
-                output = output + ppredirection_cl + "#" +  ppredirection_ol + "#" + ol.size() + "#" + cl.size() + "#" + "Goal Reached" + "#" + parents(n);
+                output = output + ppredirection_cl + "#" +  ppredirection_ol + "#" + olsz + "#" + clsz + "#" + "Goal Reached" + "#" + parents(n);
                 for(int i=0; i<3; i++){
                     for(int j=0; j<3; j++){
                         output = output + s.puz[i][j] + " ";
@@ -446,9 +523,15 @@ public class bidirectional {
                 output = output + "#" + " " + "#" + " " + "#" + " " + "#";
                 node n1 = getnodeolopp(n);
                 output = output + parents(n1);
+                for(int i=0; i<3; i++){
+                    for(int j=0; j<3; j++){
+                        output = output + g.puz[i][j] + " ";
+                    }
+                }
+                output = output + "#" + g.g + "#" + g.h + "#" + g.f + "#";
             }
             else {
-                output = output + ppredirection_cl + "#" +  ppredirection_ol + "#" + ol.size() + "#" + cl.size() + "#" + "Goal Reached" + "#" + parents(n);
+                output = output + ppredirection_cl + "#" +  ppredirection_ol + "#" + olsz + "#" + clsz + "#" + "Goal Reached" + "#" + parents(n);
                 for(int i=0; i<3; i++){
                     for(int j=0; j<3; j++){
                         output = output + g.puz[i][j] + " ";
@@ -458,6 +541,12 @@ public class bidirectional {
                 output = output + "#" + " " + "#" + " " + "#" + " " + "#";
                 node n1 = getnodeol(n);
                 output = output + parents(n1);
+                for(int i=0; i<3; i++){
+                    for(int j=0; j<3; j++){
+                        output = output + s.puz[i][j] + " ";
+                    }
+                }
+                output = output + "#" + s.g + "#" + s.h + "#" + s.f + "#";
             }
             return output;
         }
